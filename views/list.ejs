@@ -16,7 +16,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">ToDo</a>
+      <a class="navbar-brand" href="/">ToDo</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -31,15 +31,15 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="#"
+            <a class="nav-link" href="/"
               >Home <span class="sr-only">(current)</span></a
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Write</a>
+            <a class="nav-link" href="/write">Write</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
+            <a class="nav-link" href="/list">List</a>
           </li>
         </ul>
       </div>
@@ -47,6 +47,7 @@
 
     <div class="container">
       <% for (let i = 0; i < posts.length; i ++) { %>
+      <span><%= posts[i]._id %></span>
       <h4><%= posts[i].title %></h4>
       <p><%= posts[i].date %></p>
       <% } %>
