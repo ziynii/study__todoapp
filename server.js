@@ -29,14 +29,29 @@ app.get('/write', function (req, res) {
 });
 
 app.post('/add', function (req, res) {
-  res.send('전송완료');
+  db.collection('counter').findOne(
+    { name: '게시물갯수' },
+    function (error, result) {
+      let 총게시물갯수 = result.totalPost;
 
-  db.collection('post').insertOne(
-    {
-      title: req.body.title,
-      date: req.body.date,
-    },
-    function (error, result) {}
+      db.collection('post').insertOne(
+        {
+          _id: 총게시물갯수 + 1,
+          title: req.body.title,
+          date: req.body.date,
+        },
+        function (error, result) {
+          console.log('저장완료');
+          res.send('전송완료');
+
+          // counter에 있는 totalPost 1증가 (수정)
+          db.collection('counter').updateOne(
+            { name: '게시물갯수' },
+            { $inc: { totalPost: 1 } }
+          );
+        }
+      );
+    }
   );
 });
 
