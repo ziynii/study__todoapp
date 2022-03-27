@@ -45,13 +45,23 @@
       </div>
     </nav>
 
-    <div class="container">
+    <h4 class="ml-2 my-3">To Do List</h4>
+    <ul class="list-group post-list">
       <% for (let i = 0; i < posts.length; i ++) { %>
-      <span><%= posts[i]._id %></span>
-      <h4><%= posts[i].title %></h4>
-      <p><%= posts[i].date %></p>
+      <li class="list-group-item">
+        <p>글번호 : <%= posts[i]._id %></p>
+        <h4><%= posts[i].title %></h4>
+        <p><%= posts[i].date %></p>
+        <button
+          type="button"
+          class="btn btn-secondary delete-button"
+          data-id="<%= posts[i]._id %>"
+        >
+          삭제
+        </button>
+      </li>
       <% } %>
-    </div>
+    </ul>
 
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
@@ -63,5 +73,26 @@
       integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
       crossorigin="anonymous"
     ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+      const deleteBtn = document.querySelector('.delete-button');
+      const postList = document.querySelector('.post-list');
+
+      deleteBtn.addEventListener('click', function (event) {
+        const postNumber = event.target.dataset.id;
+
+        $.ajax({
+          method: 'DELETE',
+          url: '/delete',
+          data: { _id: postNumber },
+        })
+          .done(function (result) {
+            postList.removeChild(event.target.parentNode);
+            window.location.reload();
+          })
+          .fail(function (error) {});
+      });
+    </script>
   </body>
 </html>
