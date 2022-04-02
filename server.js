@@ -4,6 +4,9 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use('/public', express.static('public'));
 
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
+
 const MongoClient = require('mongodb').MongoClient;
 
 let db;
@@ -80,6 +83,26 @@ app.get('/detail/:id', function (req, res) {
       console.log(result);
 
       res.render('detail.ejs', { data: result });
+    }
+  );
+});
+
+app.get('/edit/:id', function (req, res) {
+  db.collection('post').findOne(
+    { _id: parseInt(req.params.id) },
+    function (error, result) {
+      res.render('edit.ejs', { post: result });
+    }
+  );
+});
+
+app.put('/edit', function (req, res) {
+  db.collection('post').updateOne(
+    { _id: parseInt(req.body.id) },
+    { $set: { title: req.body.title, date: req.body.date } },
+    function (error, result) {
+      console.log('수정완료');
+      res.redirect('/list');
     }
   );
 });
